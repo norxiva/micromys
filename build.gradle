@@ -1,0 +1,41 @@
+buildscript {
+    ext.dependencyPluginVersion = '1.0.3.RELEASE'
+    ext.springBootVersion = '1.5.13.RELEASE'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:${dependencyPluginVersion}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+group 'my.norxiva'
+version '1.0-SNAPSHOT'
+
+allprojects {
+    ext.bouncycastleVersion = '1.59'
+
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    dependencyManagement {
+        imports {
+            mavenBom "io.spring.platform:platform-bom:Brussels-SR10"
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+}

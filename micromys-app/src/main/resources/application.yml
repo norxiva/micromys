@@ -1,0 +1,5 @@
+server:
+  port: ${config.server.port:7011}
+spring:
+  jersey:
+    application-path: micromys/api
