@@ -17,3 +17,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  data:
+    mongodb:
+      uri: ${config.mongodb.uri:mongodb://192.168.212.128:27017/micromys}
+  redis:
+    host: ${config.redis.host:192.168.212.128}
