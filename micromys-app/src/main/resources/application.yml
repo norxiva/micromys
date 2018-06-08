@@ -5,7 +5,7 @@ spring:
     application-path: micromys/api
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: ${config.database.url:jdbc:mysql://127.0.0.1:3306/sakila?useSSL=true}
+    url: ${config.database.url:jdbc:mysql://127.0.0.1:3306/micromys?autoReconnect=true&useSSL=false}
     username: ${config.database.username:root}
     password: ${config.database.password:root}
     driver-class-name: com.mysql.jdbc.Driver
@@ -19,6 +19,6 @@ spring:
         format_sql: true
   data:
     mongodb:
-      uri: ${config.mongodb.uri:mongodb://192.168.212.128:27017/micromys}
+      uri: ${config.mongodb.uri:mongodb://127.0.0.1:27017/micromys}
   redis:
-    host: ${config.redis.host:192.168.212.128}
+    host: ${config.redis.host:127.0.0.1}
