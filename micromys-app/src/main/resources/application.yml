@@ -3,3 +3,17 @@ server:
 spring:
   jersey:
     application-path: micromys/api
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: ${config.database.url:jdbc:mysql://127.0.0.1:3306/sakila?useSSL=true}
+    username: ${config.database.username:root}
+    password: ${config.database.password:root}
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
