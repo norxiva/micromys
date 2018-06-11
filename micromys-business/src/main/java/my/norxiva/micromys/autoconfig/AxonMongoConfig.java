@@ -16,7 +16,7 @@ public class AxonMongoConfig {
 
 
     @Bean
-    public MongoClient mongoClient(@Value("${spring.data.mongodb.uri}") String uri){
+    public MongoClient mongoClient(@Value("${spring.data.mongodb.uri}") String uri) {
         return new MongoClient(new MongoClientURI(uri));
     }
 
@@ -24,7 +24,7 @@ public class AxonMongoConfig {
     @Bean
     // mongoTemplate method will conflict with MongoDataAutoConfiguration.mongoTemplate method,
     // rename to 'axonMongoTemplate
-    public MongoTemplate axonMongoTemplate(MongoClient mongoClient){
+    public MongoTemplate axonMongoTemplate(MongoClient mongoClient) {
         return new DefaultMongoTemplate(mongoClient);
     }
 
@@ -34,7 +34,7 @@ public class AxonMongoConfig {
     }
 
     @Bean
-    public MongoSagaStore mongoSagaStore(@Qualifier("axonMongoTemplate") MongoTemplate mongoTemplate){
+    public MongoSagaStore mongoSagaStore(@Qualifier("axonMongoTemplate") MongoTemplate mongoTemplate) {
         return new MongoSagaStore(mongoTemplate);
     }
 

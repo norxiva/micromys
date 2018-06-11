@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+// exclude axon jdbc and jpa auto configuration
 @EnableAutoConfiguration(exclude = {JdbcAutoConfiguration.class, JpaAutoConfiguration.class})
 public class App {
 
