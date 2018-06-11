@@ -6,6 +6,7 @@ import org.axonframework.mongo.DefaultMongoTemplate;
 import org.axonframework.mongo.MongoTemplate;
 import org.axonframework.mongo.eventhandling.saga.repository.MongoSagaStore;
 import org.axonframework.mongo.eventsourcing.eventstore.MongoEventStorageEngine;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,22 +16,25 @@ public class AxonMongoConfig {
 
 
     @Bean
-    public MongoClient mongoClient(@Value("${spring.data.mongo.uri}") String uri){
+    public MongoClient mongoClient(@Value("${spring.data.mongodb.uri}") String uri){
         return new MongoClient(new MongoClientURI(uri));
     }
 
+    @Qualifier("axonMongoTemplate")
     @Bean
-    public MongoTemplate mongoTemplate(MongoClient mongoClient){
+    // mongoTemplate method will conflict with MongoDataAutoConfiguration.mongoTemplate method,
+    // rename to 'axonMongoTemplate
+    public MongoTemplate axonMongoTemplate(MongoClient mongoClient){
         return new DefaultMongoTemplate(mongoClient);
     }
 
     @Bean
-    public MongoEventStorageEngine eventStorageEngine(MongoTemplate mongoTemplate) {
+    public MongoEventStorageEngine eventStorageEngine(@Qualifier("axonMongoTemplate") MongoTemplate mongoTemplate) {
         return new MongoEventStorageEngine(mongoTemplate);
     }
 
     @Bean
-    public MongoSagaStore mongoSagaStore(MongoTemplate mongoTemplate){
+    public MongoSagaStore mongoSagaStore(@Qualifier("axonMongoTemplate") MongoTemplate mongoTemplate){
         return new MongoSagaStore(mongoTemplate);
     }
 
