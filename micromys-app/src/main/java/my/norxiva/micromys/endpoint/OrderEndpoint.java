@@ -3,10 +3,7 @@ package my.norxiva.micromys.endpoint;
 import lombok.extern.slf4j.Slf4j;
 import my.norxiva.micromys.order.api.CreateOrderCommand;
 import my.norxiva.micromys.order.api.ExecuteOrderCommand;
-import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.commandhandling.CommandCallback;
-import org.axonframework.commandhandling.CommandMessage;
-import org.axonframework.commandhandling.GenericCommandMessage;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,18 +15,20 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
 @Path("order")
 public class OrderEndpoint {
 
-    private CommandBus commandBus;
+    private CommandGateway commandGateway;
 
     @Autowired
-    public OrderEndpoint(CommandBus commandBus) {
-        this.commandBus = commandBus;
+    public OrderEndpoint(CommandGateway commandGateway) {
+        this.commandGateway = commandGateway;
     }
 
     @POST
@@ -37,25 +36,22 @@ public class OrderEndpoint {
     @Produces(MediaType.TEXT_PLAIN)
     public Response create(CreateOrderCommand command) {
         log.info("create order:{}", command);
-        command.setId(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+        command.setId(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")));
 
-        commandBus.dispatch(new GenericCommandMessage<>(command),
-                new CommandCallback<CreateOrderCommand, Map<String, String>>() {
-                    @Override
-                    public void onSuccess(CommandMessage<? extends CreateOrderCommand> commandMessage,
-                                          Map<String, String> result) {
-                        log.info("on success: {}, {}", commandMessage, result);
-                        ExecuteOrderCommand orderCommand = new ExecuteOrderCommand();
-                        orderCommand.setId(command.getId());
-                        commandBus.dispatch(new GenericCommandMessage<>(orderCommand));
-                    }
+        CompletableFuture<String> future = commandGateway.send(command);
+        try {
+            String result = future.get();
+            log.info("result: {}", result);
+            ExecuteOrderCommand executeOrderCommand = new ExecuteOrderCommand();
+            executeOrderCommand.setId(command.getId());
 
-                    @Override
-                    public void onFailure(CommandMessage<? extends CreateOrderCommand> commandMessage,
-                                          Throwable cause) {
-                        log.info("on failure: {}, {}", commandMessage, cause);
-                    }
-                });
+            commandGateway.sendAndWait(executeOrderCommand);
+//            String executeResult = commandGateway.sendAndWait(executeOrderCommand, 5, TimeUnit.SECONDS);
+//            log.info("execute result: {}", executeResult);
+        } catch (InterruptedException | ExecutionException ex) {
+            log.error(ex.getMessage(), ex);
+            throw new RuntimeException(ex);
+        }
 
         return Response.ok("SUCCESS").build();
 

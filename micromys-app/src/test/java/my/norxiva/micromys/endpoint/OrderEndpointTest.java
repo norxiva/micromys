@@ -29,7 +29,7 @@ public class OrderEndpointTest {
     @Test
     public void testCreateOrder() {
         CreateOrderCommand command = new CreateOrderCommand();
-        command.setNo(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMhhHHmmss")));
+        command.setNo(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMhhHHmmssSSS")));
         command.setAmount(BigDecimal.valueOf(7.2));
         command.setChannelType(ChannelType.FUYOU);
         command.setTransactionCategory(TransactionCategory.DIRECT);

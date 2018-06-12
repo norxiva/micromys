@@ -22,3 +22,7 @@ spring:
       uri: mongodb://${config.mongodb.uri:127.0.0.1:27017}/micromys
   redis:
     host: ${config.redis.host:127.0.0.1}
+axon:
+  serializer:
+    events: jackson
+# this serializer is not work

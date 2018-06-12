@@ -9,7 +9,8 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-undertow'
     compile 'org.springframework.boot:spring-boot-starter-jersey'
 
-    compile 'org.springframework.boot:spring-boot-devtools'
+// axon is not support devtools
+//    compile 'org.springframework.boot:spring-boot-devtools'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
