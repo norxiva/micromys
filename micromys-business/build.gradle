@@ -13,11 +13,13 @@ dependencies {
 
     compile "org.axonframework:axon-spring-boot-starter:${axonVersion}"
     compile "org.axonframework:axon-mongo:${axonVersion}"
+    compile "org.axonframework:axon-distributed-commandbus-springcloud:${axonVersion}"
 
     compile 'commons-io:commons-io'
 
     compile 'org.hibernate:hibernate-validator'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile "org.axonframework:axon-test:${axonVersion}"
 
 }

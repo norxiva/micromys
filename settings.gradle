@@ -3,4 +3,5 @@ include 'micromys-app'
 include 'micromys-core'
 include 'micromys-payment'
 include 'micromys-business'
+include 'micromys-eureka'
 
