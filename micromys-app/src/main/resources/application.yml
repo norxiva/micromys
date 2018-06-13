@@ -25,4 +25,7 @@ spring:
 axon:
   serializer:
     events: jackson
+    general: jackson
+    messages: jackson
+
 # this serializer is not work

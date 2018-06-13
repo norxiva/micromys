@@ -1,8 +1,6 @@
 package my.norxiva.micromys.order.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import my.norxiva.micromys.ChannelType;
 import my.norxiva.micromys.OrderStatus;
 import my.norxiva.micromys.TransactionCategory;
@@ -13,6 +11,8 @@ import java.math.BigDecimal;
 
 @SuppressWarnings("WeakerAccess")
 @Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public abstract class AbstractOrderEvent {

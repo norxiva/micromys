@@ -41,30 +41,33 @@ public class OrderAggregate {
     @CommandHandler
     public OrderAggregate(CreateOrderCommand command) {
         log.info("create order command: {}", command);
-        apply(OrderCreatedEvent
-                .builder()
-                .id(command.getId())
-                .no(command.getNo())
-                .amount(command.getAmount())
-                .transactionCategory(command.getTransactionCategory())
-                .transactionType(command.getTransactionType())
-                .channelType(command.getChannelType())
-                .build());
+        apply(new OrderCreatedEvent(
+                command.getId(),
+                command.getNo(),
+                command.getAmount(),
+                command.getTransactionCategory(),
+                command.getTransactionType(),
+                command.getChannelType(),
+                null,
+                null,
+                null)
+        );
     }
 
 
     @CommandHandler
     public void execute(ExecuteOrderCommand command) {
         log.info("execute order command: {}", command);
-        apply(OrderExecutedEvent
-                .builder()
-                .id(command.getId())
-                .no(command.getNo())
-                .amount(command.getAmount())
-                .transactionCategory(command.getTransactionCategory())
-                .transactionType(command.getTransactionType())
-                .channelType(command.getChannelType())
-                .build());
+        apply(new OrderExecutedEvent(
+                command.getId(),
+                command.getNo(),
+                command.getAmount(),
+                command.getTransactionCategory(),
+                command.getTransactionType(),
+                command.getChannelType(),
+                null,
+                null,
+                null));
     }
 
     @EventSourcingHandler
