@@ -25,7 +25,7 @@ import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 @Slf4j
 @Getter
 @NoArgsConstructor
-@Aggregate
+@Aggregate(snapshotTriggerDefinition = "snapshotTriggerDefinition")
 public class OrderAggregate {
 
     @AggregateIdentifier

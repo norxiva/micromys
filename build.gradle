@@ -34,8 +34,11 @@ allprojects {
     dependencyManagement {
         imports {
             mavenBom 'io.spring.platform:platform-bom:Brussels-SR10'
-            // use Dalston.SR5, 'cause Edgware.SR3(eureka-client version is 1.4.4) has some bugs.
-            mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Dalston.SR5'
+            // axon 3.2.2 doesn't support spring cloud Dalston.SR5
+            // but if use Edgware.SR3(eureka-client version is 1.4.4) has a bug:
+            // it will take effect automatically if spring-cloud-starter-eureka is included
+            // and @EnableDiscoveryClient is not set.
+            mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Edgware.SR3'
         }
     }
 

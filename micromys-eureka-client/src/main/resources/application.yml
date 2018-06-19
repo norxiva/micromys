@@ -1,0 +1,5 @@
+server:
+  port: ${config.server.port:7021}
+spring:
+  application:
+    name: micromys-app
