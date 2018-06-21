@@ -15,10 +15,4 @@ public class AxonInfraConfig {
         return new SpringAggregateSnapshotterFactoryBean();
     }
 
-    @Bean
-    public SnapshotTriggerDefinition snapshotTriggerDefinition(Snapshotter snapshotter) {
-        return new EventCountSnapshotTriggerDefinition(snapshotter, 50);
-    }
-
-
 }

@@ -1,20 +1,21 @@
 package my.norxiva.micromys.endpoint;
 
 import lombok.extern.slf4j.Slf4j;
+import my.norxiva.micromys.order.OrderRepositoryHandler;
+import my.norxiva.micromys.order.api.ConfirmOrderCommand;
 import my.norxiva.micromys.order.api.CreateOrderCommand;
 import my.norxiva.micromys.order.api.ExecuteOrderCommand;
+import my.norxiva.micromys.order.api.PrepareOrderCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -24,10 +25,13 @@ import java.util.concurrent.ExecutionException;
 public class OrderEndpoint {
 
     private CommandGateway commandGateway;
+    private OrderRepositoryHandler orderRepositoryHandler;
 
     @Autowired
-    public OrderEndpoint(CommandGateway commandGateway) {
+    public OrderEndpoint(CommandGateway commandGateway,
+                         OrderRepositoryHandler orderRepositoryHandler) {
         this.commandGateway = commandGateway;
+        this.orderRepositoryHandler = orderRepositoryHandler;
     }
 
     @POST
@@ -53,6 +57,30 @@ public class OrderEndpoint {
         }
 
         return Response.ok("SUCCESS").build();
+    }
 
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("prepare")
+    public Response prepare(PrepareOrderCommand command) {
+        return Response.ok("SUCCESS").build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("confirm")
+    public Response confirm(ConfirmOrderCommand command) {
+        commandGateway.sendAndWait(command);
+        return Response.ok("SUCCESS").build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{id}")
+    public Response get(@PathParam("id") String id) {
+        Map<String, Object> result = orderRepositoryHandler.get(id);
+        return Response.ok(result).build();
     }
 }
