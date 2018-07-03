@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Getter
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class OrderPreparedEvent extends AbstractOrderEvent{
+public class OrderPreparedEvent extends AbstractOrderEvent {
 
     public OrderPreparedEvent(String id,
                               String no,

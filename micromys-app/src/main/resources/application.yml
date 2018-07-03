@@ -32,6 +32,9 @@ axon:
     messages: jackson
   distributed:
     enabled: true
+  extra:
+    mongo:
+      database: micromys
 eureka:
   client:
     service-url:

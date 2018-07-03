@@ -1,5 +1,6 @@
-package my.norxiva.micromys.order;
+package my.norxiva.micromys.order.autoconfig;
 
+import my.norxiva.micromys.order.OrderAggregate;
 import org.apache.commons.lang3.StringUtils;
 import org.axonframework.commandhandling.model.Repository;
 import org.axonframework.eventsourcing.*;
@@ -9,28 +10,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class OrderConfig {
+public class OrderAutoConfiguration {
 
     @Bean
     public AggregateFactory<OrderAggregate> orderAggregateFactory() {
-        SpringPrototypeAggregateFactory<OrderAggregate> aggregateFactory = new SpringPrototypeAggregateFactory<>();
-        aggregateFactory.setPrototypeBeanName(StringUtils.uncapitalize(OrderAggregate.class.getSimpleName()));
-        return aggregateFactory;
-    }
-
-    @Bean
-    public SnapshotTriggerDefinition snapshotTriggerDefinition(Snapshotter snapshotter) {
-        // threshold' value should not be too lower
-        return new EventCountSnapshotTriggerDefinition(snapshotter, 3);
+        SpringPrototypeAggregateFactory<OrderAggregate> factory = new SpringPrototypeAggregateFactory<>();
+        factory.setPrototypeBeanName(StringUtils.uncapitalize(OrderAggregate.class.getSimpleName()));
+        return factory;
     }
 
     @Bean
     public Repository<OrderAggregate> orderAggregateRepository(Snapshotter snapshotter,
                                                                EventStore eventStore,
                                                                AggregateFactory<OrderAggregate> aggregateFactory) {
-        SnapshotTriggerDefinition definition = new EventCountSnapshotTriggerDefinition(snapshotter, 3);
+        SnapshotTriggerDefinition definition = new EventCountSnapshotTriggerDefinition(snapshotter, 1);
         return new EventSourcingRepository<>(aggregateFactory, eventStore, definition);
-
     }
 
 }

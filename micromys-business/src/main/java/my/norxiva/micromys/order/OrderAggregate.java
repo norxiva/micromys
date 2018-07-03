@@ -83,7 +83,7 @@ public class OrderAggregate {
 
     @CommandHandler
     public void execute(ConfirmOrderCommand command) {
-        log.info("execute order command: {}", command);
+        log.info("confirm order command: {}", command);
         apply(new OrderConfirmedEvent(
                 command.getId(),
                 command.getNo(),

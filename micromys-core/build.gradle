@@ -11,6 +11,10 @@ dependencies {
     compile 'dom4j:dom4j'
     compile 'com.thoughtworks.xstream:xstream'
 
+    compile 'org.hibernate:hibernate-validator'
+
+    compile 'org.aspectj:aspectjweaver'
+
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'

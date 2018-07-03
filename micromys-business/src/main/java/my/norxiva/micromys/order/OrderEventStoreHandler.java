@@ -13,13 +13,13 @@ import static com.mongodb.client.model.Filters.eq;
 
 @Slf4j
 @Component
-public class OrderRepositoryHandler {
+public class OrderEventStoreHandler {
 
     private MongoTemplate mongoTemplate;
     private Repository<OrderAggregate> repository;
 
     @Autowired
-    public OrderRepositoryHandler(Repository<OrderAggregate> repository,
+    public OrderEventStoreHandler(Repository<OrderAggregate> repository,
                                   MongoTemplate mongoTemplate) {
         this.repository = repository;
         this.mongoTemplate = mongoTemplate;
@@ -28,7 +28,7 @@ public class OrderRepositoryHandler {
     public Map<String, Object> get(String id) {
         try {
             return mongoTemplate.snapshotCollection().find(eq("aggregateIdentifier", id)).first();
-        }catch (AggregateNotFoundException ex) {
+        } catch (AggregateNotFoundException ex) {
             log.warn("aggregate not found, repository '{}' id '{}'", OrderAggregate.class.getSimpleName(), id);
             return null;
         }

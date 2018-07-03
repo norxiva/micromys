@@ -12,9 +12,11 @@ import org.axonframework.serialization.upcasting.event.EventUpcaster;
 import org.axonframework.spring.config.AxonConfiguration;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@EnableConfigurationProperties(AxonExtraMongoProperties.class)
 @Configuration
 public class AxonMongoConfig {
 
@@ -27,8 +29,8 @@ public class AxonMongoConfig {
     @Bean
     // mongoTemplate method will conflict with MongoDataAutoConfiguration.mongoTemplate method,
     // rename to 'axonMongoTemplate
-    public MongoTemplate axonMongoTemplate(MongoClient mongoClient) {
-        return new DefaultMongoTemplate(mongoClient);
+    public MongoTemplate axonMongoTemplate(MongoClient mongoClient, AxonExtraMongoProperties properties) {
+        return new DefaultMongoTemplate(mongoClient, properties.getDatabase());
     }
 
     @Bean

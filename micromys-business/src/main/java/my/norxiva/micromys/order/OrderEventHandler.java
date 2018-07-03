@@ -1,16 +1,13 @@
 package my.norxiva.micromys.order;
 
 import lombok.extern.slf4j.Slf4j;
-import my.norxiva.micromys.order.api.OrderConfirmedEvent;
-import my.norxiva.micromys.order.api.OrderCreatedEvent;
-import my.norxiva.micromys.order.api.OrderExecutedEvent;
-import my.norxiva.micromys.order.api.OrderPreparedEvent;
+import my.norxiva.micromys.order.api.*;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class OrderEventListener {
+public class OrderEventHandler {
 
     @EventHandler
     public void handle(OrderPreparedEvent event) {
